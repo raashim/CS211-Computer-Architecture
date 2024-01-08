@@ -1,0 +1,101 @@
+Introduction
+The SimpleDB project aims to create a rudimentary Database Management System
+(DBMS) implemented in the C programming language. This project provides a command-line
+interface (CLI) that allows users to interact with a basic database, performing essential
+operations such as setup, insert, delete, modify, get, and exit. The primary goal of SimpleDB is to
+provide a foundation for understanding the fundamental principles of data management in C.
+Your program will be required to store three different types of data: Programming
+Languages, Operating Systems, and Databases. Each table will store various data types and
+differing values. The user will be able to declare the table size, insert data, delete data, modify
+existing records, and get all records via a set of commands. Your software should respond to
+these commands, perform the intended action, and provide the proper output back to the user.
+Logistics
+Your program must not utilize functions from any external C library. In other words, you
+must code all of the logic as per the standards set forth below. The libraries included in the
+skeleton code should be all that is required to complete a successful implementation.
+You are able to create helper functions in order to complete the necessary
+implementations. However, ensure that the provided function signatures are the functions used
+for execution.
+The skeleton code will provide you with an interactive shell and a means to parse the
+input from the user.
+Tables
+Your SimpleDB should be able to store three tables of data: Programing Languages,
+Operating Systems, and Databases. Each category should have a unique typedef struct that
+identifies its schema. When we reference “table,” we are referencing the array of structs declared
+in memory. Each table should be defined as a single array in your C code stored in memory.
+When we reference “record,” we are referencing the individual struct that is stored inside the
+array.
+© Created by AJ DiLeo for use in Rutgers University’s CS211 Fall 2023 course instructed by Jay Kania.
+programmingLanguages
+id: int
+language: dynamically allocated string
+year: int
+creator: dynamically allocated string
+paradigm: dynamically allocated string
+popularityIndex: double
+operatingSystems
+id: int
+name: dynamically allocated string
+year: int
+developer: dynamically allocated string
+kernelType: dynamically allocated string
+databases
+id: int
+name: dynamically allocated string
+year: int
+type: dynamically allocated string
+developer: dynamically allocated string
+*There will be one additional field that is maintained internally (not shown to user), that is
+discussed in the DELETE passage*
+Table Metadata
+In order for your code to properly function, you must maintain a separate structure that
+keeps track of various fields pertinent to each table. At a minimum, you should maintain the
+following fields:
+● count: int
+○ This integer will store the current count of records in a particular table. This is
+useful as when you traverse the array (table) of structs (records), you must know
+how many elements are currently in the array (table).
+○ This should be initialized in initializeMetadata().
+© Created by AJ DiLeo for use in Rutgers University’s CS211 Fall 2023 course instructed by Jay Kania.
+○ This should be updated as records are inserted.
+● nextIndex: int
+○ This integer will store the index of the next available slot in the array (table). This
+is important because as you insert, you must know what index you can insert into.
+○ This should be initialized in initializeMetadata()
+○ This should be updated as records are inserted.
+● maxCount: int
+○ This integer will store the maximum number of records (instances of structs) that
+can be stored in a table (array). This is important because as you insert, your
+program should know if there is enough space to insert.
+○ This should be initialized during setup.
+Commands
+The user will have access to the following commands to interact with SimpleDB. The
+table names correspond to the camel-cased table names in section “Table.”
+● Setup
+○ setup {table} {numRows}
+○ Setup will allocate enough memory for {numRows} in {table}.
+○ This command is to be executed before performing any other operations.
+● Insert
+○ insert {table} {data}
+○ Insert will allow you to add {data} to {table} following {table}’s schema.
+○ The order of the data must match the order of attributes as defined in “Tables”
+■ E.g., for table databases: {id} {name} {year} {type} {developer}
+○ The user does not provide any data for internally maintained fields (see “Delete”)
+● Delete
+○ delete {table} {id}
+○ Delete will allow you to soft delete all records that match {id} in {table}
+● Modify
+○ modify {table} {id} {data}
+○ Modify will allow you to modify all records that match {id} in {table}.
+○ It will overwrite all of the data points stored in the record
+○ The data input will be the same as insert. See “Insert” and the examples below.
+● Get
+○ get {table}
+○ Get will allow you to retrieve all non-deleted records from “table”
+○ It will print in CSV format, where values that contain spaces are wrapped in
+quotes. See examples below.
+© Created by AJ DiLeo for use in Rutgers University’s CS211 Fall 2023 course instructed by Jay Kania.
+■ E.g., Dennis Ritchie -> “Dennis Ritchie”
+● Exit
+○ exit
+○ Exit will free all allocated memory and gracefully terminate the program.
